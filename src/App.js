@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+    const [value, setValue] = React.useState("");
 
+    React.useEffect(() => {
+        getData();
+    }, []);
+
+    function saveData() {
+        var mydata = {
+            name : "Divya Lalwani",
+            gender : "Female",
+            mobile : 9865320147
+        }
+        var a = JSON.stringify(mydata);
+        localStorage.setItem("userData", a);
+        setValue("Data Stored");
+    }
+
+    function getData() {
+        var a = localStorage.getItem("userData");
+        if(a){
+            var details = JSON.parse(a);
+            var msg = `Name is ${details.name} Gender is ${details.gender}`;
+            setValue("Detail is :" +msg)
+        }else{
+            setValue("No Value");
+        }
+    }
+
+    function removeData(){
+        localStorage.removeItem("userData");
+        setValue("Data Removed");
+    }
+
+    return(
+        <>
+            <h2>LocalStorage</h2>
+            {value} <br />
+            <button onClick={saveData}>SaveData</button>
+            <button onClick={getData}>GetData</button>
+            <button onClick={removeData}>RemoveData</button>
+        </>
+    );
+}
 export default App;
